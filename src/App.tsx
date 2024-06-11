@@ -1,26 +1,15 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Routes, Route } from "react-router-dom";
+import CodeInput from "./components/codeInput/codeInput";
+import Grid from "@mui/material/Grid";
+import Home from "./pages/home";
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Grid container justifyContent={"center"} alignItems={"center"}>
+      <Routes>
+        <Route path="/verify" element={<CodeInput />} />
+        <Route path="/" element={<Home />}></Route>
+      </Routes>
+    </Grid>
   );
 }
-
-export default App;
