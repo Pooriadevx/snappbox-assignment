@@ -1,62 +1,73 @@
-import React, { KeyboardEvent, useRef, useState } from "react";
-import { Grid, TextField } from "@mui/material";
+import React from "react";
+import {
+  Button,
+  ButtonGroup,
+  Grid,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { handleResendCode, handleVerifyCode } from "../../utils/codeInput";
+import { useCodeInput } from "../../utils/useCodeInput";
+import classes from "./codeInput.module.scss";
 
 const numberOfDigits = 4;
 
-export const CodeInput = () => {
-  const [otp, setOtp] = useState<string[]>(new Array(numberOfDigits).fill(""));
-  const otpBoxRef = useRef<HTMLInputElement[]>([]);
+export const CodeInput: React.FC = () => {
 
-  function handleChange(value: string, index: number) {
-    if (/^[0-9]+$/.test(value)) {
-      let newArr = [...otp];
-      newArr[index] = value;
-      setOtp(newArr);
-
-      if (value && index < numberOfDigits - 1) {
-        otpBoxRef.current[index + 1].focus();
-      }
-    }
-  }
-
-  function handleBackspaceEnter(
-    e: KeyboardEvent<HTMLDivElement>,
-    index: number
-  ) {
-    if (e.key === "Backspace" && index > 0) {
-      if ((e.target as HTMLInputElement).value) {
-        let newArr = [...otp];
-        newArr[index] = "";
-        setOtp(newArr);
-      } else {
-        otpBoxRef.current[index - 1].focus();
-      }
-    } else if (e.key === "Enter" && (e.target as HTMLInputElement).value) {
-      if (index < numberOfDigits - 1) {
-        otpBoxRef.current[index + 1].focus();
-      } else {
-        // send code...
-      }
-    }
-  }
+  const { handleBackspaceEnter, handleChange, otpBoxRef, otp } =
+    useCodeInput();
 
   return (
-    <Grid container alignItems={"center"} justifyContent={"center"} gap={3}>
-      {otp.map((digit, index) => (
-        <Grid item key={index} container xs={1}>
-          <TextField
-            variant="outlined"
-            inputProps={{
-              maxLength: 1,
-            }}
-            size="small"
-            value={digit}
-            onChange={(e) => handleChange(e.target.value, index)}
-            onKeyUp={(e) => handleBackspaceEnter(e, index)}
-            inputRef={(ref) => (otpBoxRef.current[index] = ref)}
-          />
-        </Grid>
-      ))}
+    <Grid
+      container
+      alignItems={"center"}
+      justifyContent={"center"}
+      paddingY={20}
+      gap={4}
+      direction={"column"}
+    >
+      <Typography variant="h5">Type Verify Code:</Typography>
+      <Grid
+        gap={1}
+        xs={4}
+        alignItems={"center"}
+        justifyContent={"center"}
+        container
+        onChange={(e) => handleChange(e.target)}
+        onKeyUp={(e) => handleBackspaceEnter(e)}
+      >
+        {otp.map((digit, index) => (
+          <Grid item key={index} xs={1}>
+            <TextField
+              variant="outlined"
+              inputProps={{
+                className: classes.input,
+                maxLength: 1,
+                "data-index": index,
+              }}
+              size="small"
+              value={digit}
+              inputRef={(ref) => (otpBoxRef.current[index] = ref)}
+            />
+          </Grid>
+        ))}
+      </Grid>
+      <ButtonGroup variant="contained" aria-label="Basic button group">
+        <Button
+          variant="contained"
+          disabled={otp.join("").length !== numberOfDigits}
+          onClick={() => handleVerifyCode(otp.join(""), )}
+        >
+          verify
+        </Button>
+        <Button
+          variant="contained"
+          onClick={() => handleResendCode()}
+          color="warning"
+        >
+          Resend Code
+        </Button>
+      </ButtonGroup>
     </Grid>
   );
 };
