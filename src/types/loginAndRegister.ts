@@ -1,5 +1,13 @@
 import { Dispatch, FormEvent, SetStateAction } from "react";
 import { openSnackbarType } from "./common";
+import { InputRef, PasswordProps } from "antd/es/input";
+
+export type DataOfLoginFieldsType = Array<{
+  name: string;
+  Element: React.ForwardRefExoticComponent<
+    PasswordProps & React.RefAttributes<InputRef>
+  >;
+}>;
 
 export type LoginInputsType = {
   email: string;
