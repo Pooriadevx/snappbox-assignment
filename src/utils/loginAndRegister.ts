@@ -1,3 +1,4 @@
+import Cookie from "js-cookie";
 import axios from "axios";
 import {
   handleFieldsType,
@@ -17,8 +18,9 @@ export const handleLogin: handleLoginType = (data, openSnackbar) => {
   axios
     .post("/auth/login", data)
     .then((res) => {
-      axios.defaults.headers.common.Authorization = res.data.access_token;
+      Cookie.set("token", res.data.access_token, { secure: true });
       openSnackbar("welcome to panel");
+      setTimeout(() => window.location.replace("/dashboard"), 3000);
     })
     .catch((err) => {
       openSnackbar(err.response.data.message);
