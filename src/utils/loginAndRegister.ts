@@ -21,7 +21,7 @@ export const handleLogin: handleLoginType = (data, openSnackbar) => {
       openSnackbar("welcome to panel");
     })
     .catch((err) => {
-      openSnackbar(err.message);
+      openSnackbar(err.response.data.message);
     });
 };
 
@@ -34,6 +34,6 @@ export const handleRegister: handleRegisterType = (data, openSnackbar) => {
       setTimeout(() => window.location.replace("/verify"), 4000);
     })
     .catch((err) => {
-      openSnackbar(err.message);
+      openSnackbar(err.response.data.message);
     });
 };

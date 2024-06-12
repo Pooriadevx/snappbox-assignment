@@ -19,12 +19,14 @@ export const handleVerifyCode: handleVerifyCodeType = (
       .then((res) => {
         if (res.data) {
           openSnackbar("Please Login");
-          window.location.replace("/");
+          setTimeout(() => window.location.replace("/"), 4000);
         } else {
           openSnackbar("wrong code");
         }
       })
-      .catch((err) => openSnackbar(err.message));
+      .catch((err) => openSnackbar(err.response.data.message));
+  } else {
+    openSnackbar("Profile doesn't exist!");
   }
 };
 
@@ -39,5 +41,7 @@ export const handleResendCode: handleResendCodeType = (openSnackbar) => {
       .catch((err) => {
         openSnackbar(err.response.data.message);
       });
+  } else {
+    openSnackbar("Profile doesn't exist!");
   }
 };

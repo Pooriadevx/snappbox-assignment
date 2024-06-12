@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Grid, TextField } from "@mui/material";
+import { Button, Grid, TextField, Typography } from "@mui/material";
 import { LoginInputsType } from "../../types/loginAndRegister";
 import { handleFields, handleLogin } from "../../utils/loginAndRegister";
 import { useCustomSnackbar } from "../../hooks/useCustomSnackbar";
@@ -20,8 +20,12 @@ const Login: React.FC = () => {
         direction={"column"}
         xs={3}
         gap={1}
+        paddingY={10}
         onChange={(e) => handleFields(e, setData)}
       >
+        <Typography variant="h4" gutterBottom>
+          Login
+        </Typography>
         {Object.keys(data).map((item) => (
           <TextField
             key={item}
@@ -37,6 +41,9 @@ const Login: React.FC = () => {
           fullWidth
         >
           Submit
+        </Button>
+        <Button href="/register" variant="text">
+          Register
         </Button>
       </Grid>
       {CustomSnackbar}
