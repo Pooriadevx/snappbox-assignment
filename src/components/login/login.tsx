@@ -1,10 +1,9 @@
 import React from "react";
-import { Button, Flex, Form, Typography } from "antd";
-import { LoginInputsType } from "../../types/loginAndRegister";
+import { Button, Flex, Form, Input } from "antd";
+import Title from "antd/es/typography/Title";
 import { handleLogin } from "../../utils/loginAndRegister";
 import { useCustomSnackbar } from "../../hooks/useCustomSnackbar";
 import { dataOfFields } from "../../constants/loginAndRegister";
-import Title from "antd/es/typography/Title";
 
 const Login: React.FC = () => {
   const { CustomSnackbar, openSnackbar } = useCustomSnackbar();
@@ -26,12 +25,12 @@ const Login: React.FC = () => {
           onFinish={(values) => handleLogin(values, openSnackbar)}
           autoComplete="off"
         >
-          {dataOfFields.map(({ name, Element }) => {
+          {dataOfFields.map((name) => {
             return (
-              <Form.Item<LoginInputsType>
+              <Form.Item
                 label={name}
                 key={name}
-                name={name as keyof LoginInputsType}
+                name={name}
                 rules={[
                   {
                     required: true,
@@ -39,7 +38,11 @@ const Login: React.FC = () => {
                   },
                 ]}
               >
-                <Element size="large" />
+                {name === "password" ? (
+                  <Input.Password size="large" />
+                ) : (
+                  <Input size="large" />
+                )}
               </Form.Item>
             );
           })}

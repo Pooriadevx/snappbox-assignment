@@ -1,17 +1,5 @@
 import axios from "axios";
-import {
-  handleFieldsType,
-  handleLoginType,
-  handleRegisterType,
-} from "../types/loginAndRegister";
-
-export const handleFields: handleFieldsType = (event, cb) => {
-  const element = event.target as HTMLInputElement;
-  cb((prev) => ({
-    ...prev,
-    [element.name]: element.value,
-  }));
-};
+import { handleLoginType, handleRegisterType } from "../types/loginAndRegister";
 
 export const handleLogin: handleLoginType = (data, openSnackbar) => {
   axios

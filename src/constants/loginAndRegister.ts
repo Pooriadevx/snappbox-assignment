@@ -1,13 +1,12 @@
-import { Input } from "antd";
+import { DataOfRegisterFieldsType } from './../types/loginAndRegister';
 import { DataOfLoginFieldsType } from "../types/loginAndRegister";
 
-export const dataOfFields: DataOfLoginFieldsType = [
-  {
-    name: "email",
-    Element: Input,
-  },
-  {
-    name: "password",
-    Element: Input.Password,
-  },
+export const dataOfFields: DataOfLoginFieldsType = ["email", "password"];
+
+export const dataOfRegisterFields: DataOfRegisterFieldsType = [
+  "firstName",
+  "lastName",
+  "email",
+  "password",
+  "phone",
 ];

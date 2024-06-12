@@ -1,25 +1,26 @@
-import { Dispatch, FormEvent, SetStateAction } from "react";
 import { openSnackbarType } from "./common";
-import { InputRef, PasswordProps } from "antd/es/input";
 
-export type DataOfLoginFieldsType = Array<{
-  name: string;
-  Element: React.ForwardRefExoticComponent<
-    PasswordProps & React.RefAttributes<InputRef>
-  >;
-}>;
-
-export type LoginInputsType = {
+type LoginInputsType = {
   email: string;
   password: string;
 };
+
+export type DataOfLoginFieldsType = ["email", "password"];
 
 export type handleLoginType = (
   data: LoginInputsType,
   openSnackbar: openSnackbarType
 ) => void;
 
-export type RegisterInputsType = {
+export type DataOfRegisterFieldsType = [
+  "firstName",
+  "lastName",
+  "email",
+  "password",
+  "phone"
+];
+
+type RegisterInputsType = {
   firstName: string;
   lastName: string;
   email: string;
@@ -30,9 +31,4 @@ export type RegisterInputsType = {
 export type handleRegisterType = (
   data: RegisterInputsType,
   openSnackbar: openSnackbarType
-) => void;
-
-export type handleFieldsType = <T>(
-  event: FormEvent<HTMLDivElement>,
-  cb: Dispatch<SetStateAction<T>>
 ) => void;
