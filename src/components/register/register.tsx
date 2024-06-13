@@ -1,21 +1,16 @@
 import React from "react";
-import { useCustomSnackbar } from "../../hooks/useCustomSnackbar";
-import { handleRegister } from "../../utils/loginAndRegister";
 import { Button, Flex, Form, Input } from "antd";
 import Title from "antd/es/typography/Title";
-import { dataOfRegisterFields } from "../../constants/loginAndRegister";
+import { useCustomSnackbar } from "../../hooks/useCustomSnackbar";
+import { handleRegister } from "../../utils/loginAndRegister";
+import { dataOfRegisterFields } from "../../constants/common";
 
 const Register: React.FC = () => {
   const { CustomSnackbar, openSnackbar } = useCustomSnackbar();
 
   return (
     <>
-      <Flex
-        justify="center"
-        align="center"
-        vertical
-        style={{ width: "100%", height: "100vh" }}
-      >
+      <Flex justify="center" align="center" vertical>
         <Title level={4}>Register</Title>
         <Form
           name="Form"

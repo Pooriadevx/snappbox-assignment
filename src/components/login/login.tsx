@@ -3,19 +3,14 @@ import { Button, Flex, Form, Input } from "antd";
 import Title from "antd/es/typography/Title";
 import { handleLogin } from "../../utils/loginAndRegister";
 import { useCustomSnackbar } from "../../hooks/useCustomSnackbar";
-import { dataOfFields } from "../../constants/loginAndRegister";
+import { dataOfFields } from "../../constants/common";
 
 const Login: React.FC = () => {
   const { CustomSnackbar, openSnackbar } = useCustomSnackbar();
 
   return (
     <>
-      <Flex
-        justify="center"
-        align="center"
-        vertical
-        style={{ width: "100%", height: "100vh" }}
-      >
+      <Flex justify="center" align="center" vertical>
         <Title level={4}>Login</Title>
         <Form
           name="Form"
