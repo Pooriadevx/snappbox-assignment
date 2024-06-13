@@ -2,15 +2,15 @@ import React from "react";
 import { Button, Flex, Form, InputNumber } from "antd";
 import ButtonGroup from "antd/es/button/button-group";
 import Title from "antd/es/typography/Title";
-import { useCustomSnackbar } from "../../hooks/useCustomSnackbar";
 import { handleResendCode, handleVerifyCode } from "../../utils/codeInput";
 import { useCodeInput } from "../../utils/useCodeInput";
 import { formValuesType } from "../../types/codeInput";
 import { CODE_INPUT_DIGITS } from "../../constants/common";
 import classes from "./codeInput.module.scss";
+import { useNotification } from "../../hooks/useNotification";
 
 export const CodeInput: React.FC = () => {
-  const { CustomSnackbar, openSnackbar } = useCustomSnackbar();
+  const { contextHolder, openNotification } = useNotification();
   const { handleBackspaceEnter, otpBoxRef, handleChange } = useCodeInput();
 
   const [form] = Form.useForm<formValuesType>();
@@ -18,7 +18,7 @@ export const CodeInput: React.FC = () => {
 
   const onFinish = (values: formValuesType) => {
     const otpCode = Object.values(values).join("");
-    handleVerifyCode(otpCode, openSnackbar);
+    handleVerifyCode(otpCode, openNotification);
   };
 
   return (
@@ -60,14 +60,14 @@ export const CodeInput: React.FC = () => {
             verify
           </Button>
           <Button
-            onClick={() => handleResendCode(openSnackbar)}
+            onClick={() => handleResendCode(openNotification)}
             color="warning"
           >
             Resend Code
           </Button>
         </ButtonGroup>
       </Flex>
-      {CustomSnackbar}
+      {contextHolder}
     </>
   );
 };

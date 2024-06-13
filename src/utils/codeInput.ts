@@ -6,7 +6,7 @@ import axios from "axios";
 
 export const handleVerifyCode: handleVerifyCodeType = (
   verifyCode,
-  openSnackbar
+  openNotification
 ) => {
   const profile = localStorage.getItem("profile");
   if (profile) {
@@ -18,30 +18,30 @@ export const handleVerifyCode: handleVerifyCodeType = (
       .post("/auth/verify", data)
       .then((res) => {
         if (res.data) {
-          openSnackbar("Please Login");
+          openNotification("Register Completed. Please Login", "success");
           setTimeout(() => window.location.replace("/"), 4000);
         } else {
-          openSnackbar("wrong code");
+          openNotification("Wrong code", "warning");
         }
       })
-      .catch((err) => openSnackbar(err.response.data.message));
+      .catch((err) => openNotification(err.response.data.message, "warning"));
   } else {
-    openSnackbar("Profile doesn't exist!");
+    openNotification("Profile doesn't exist!", "error");
   }
 };
 
-export const handleResendCode: handleResendCodeType = (openSnackbar) => {
+export const handleResendCode: handleResendCodeType = (openNotification) => {
   const profile = localStorage.getItem("profile");
   if (profile) {
     axios
       .post("/auth/resend-code", { email: JSON.parse(profile).email })
       .then((res) => {
-        openSnackbar(`code: ${res.data}`);
+        openNotification(`Code: ${res.data}`, "info");
       })
       .catch((err) => {
-        openSnackbar(err.response.data.message);
+        openNotification(err.response.data.message, "warning");
       });
   } else {
-    openSnackbar("Profile doesn't exist!");
+    openNotification("Profile doesn't exist!", "error");
   }
 };

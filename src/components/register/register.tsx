@@ -1,12 +1,12 @@
 import React from "react";
 import { Button, Flex, Form, Input } from "antd";
 import Title from "antd/es/typography/Title";
-import { useCustomSnackbar } from "../../hooks/useCustomSnackbar";
+import { useNotification } from "../../hooks/useNotification";
 import { handleRegister } from "../../utils/loginAndRegister";
 import { dataOfRegisterFields } from "../../constants/common";
 
 const Register: React.FC = () => {
-  const { CustomSnackbar, openSnackbar } = useCustomSnackbar();
+  const { contextHolder, openNotification } = useNotification();
 
   return (
     <>
@@ -17,7 +17,7 @@ const Register: React.FC = () => {
           labelCol={{ span: 8 }}
           wrapperCol={{ span: 16 }}
           style={{ width: 600 }}
-          onFinish={(values) => handleRegister(values, openSnackbar)}
+          onFinish={(values) => handleRegister(values, openNotification)}
           autoComplete="off"
         >
           {dataOfRegisterFields.map((name) => {
@@ -53,7 +53,7 @@ const Register: React.FC = () => {
           </Form.Item>
         </Form>
       </Flex>
-      {CustomSnackbar}
+      {contextHolder}
     </>
   );
 };

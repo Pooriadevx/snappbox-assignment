@@ -2,11 +2,11 @@ import React from "react";
 import { Button, Flex, Form, Input } from "antd";
 import Title from "antd/es/typography/Title";
 import { handleLogin } from "../../utils/loginAndRegister";
-import { useCustomSnackbar } from "../../hooks/useCustomSnackbar";
+import { useNotification } from "../../hooks/useNotification";
 import { dataOfFields } from "../../constants/common";
 
 const Login: React.FC = () => {
-  const { CustomSnackbar, openSnackbar } = useCustomSnackbar();
+  const { contextHolder, openNotification } = useNotification();
 
   return (
     <>
@@ -17,7 +17,7 @@ const Login: React.FC = () => {
           labelCol={{ span: 8 }}
           wrapperCol={{ span: 16 }}
           style={{ width: 600 }}
-          onFinish={(values) => handleLogin(values, openSnackbar)}
+          onFinish={(values) => handleLogin(values, openNotification)}
           autoComplete="off"
         >
           {dataOfFields.map((name) => {
@@ -53,7 +53,7 @@ const Login: React.FC = () => {
           </Form.Item>
         </Form>
       </Flex>
-      {CustomSnackbar}
+      {contextHolder}
     </>
   );
 };

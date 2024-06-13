@@ -1,4 +1,4 @@
-import { openSnackbarType } from "./common";
+import { openNotificationType } from "./common";
 
 type LoginInputsType = {
   email: string;
@@ -9,7 +9,7 @@ export type DataOfLoginFieldsType = ["email", "password"];
 
 export type handleLoginType = (
   data: LoginInputsType,
-  openSnackbar: openSnackbarType
+  openNotification: openNotificationType
 ) => void;
 
 export type DataOfRegisterFieldsType = [
@@ -30,5 +30,5 @@ type RegisterInputsType = {
 
 export type handleRegisterType = (
   data: RegisterInputsType,
-  openSnackbar: openSnackbarType
+  openNotification: openNotificationType
 ) => void;

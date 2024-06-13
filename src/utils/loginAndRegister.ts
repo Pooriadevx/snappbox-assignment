@@ -1,27 +1,27 @@
 import axios from "axios";
 import { handleLoginType, handleRegisterType } from "../types/loginAndRegister";
 
-export const handleLogin: handleLoginType = (data, openSnackbar) => {
+export const handleLogin: handleLoginType = (data, openNotification) => {
   axios
     .post("/auth/login", data)
     .then((res) => {
       axios.defaults.headers.common.Authorization = res.data.access_token;
-      openSnackbar("welcome to panel");
+      openNotification("welcome to panel", "success");
     })
     .catch((err) => {
-      openSnackbar(err.response.data.message);
+      openNotification(err.response.data.message, "error");
     });
 };
 
-export const handleRegister: handleRegisterType = (data, openSnackbar) => {
+export const handleRegister: handleRegisterType = (data, openNotification) => {
   axios
     .post("/auth/register", data)
     .then((res) => {
       localStorage.setItem("profile", JSON.stringify(res.data));
-      openSnackbar(`Your Code: ${res.data.verify_code}`);
+      openNotification(`Your Code: ${res.data.verify_code}`, "info");
       setTimeout(() => window.location.replace("/verify"), 4000);
     })
     .catch((err) => {
-      openSnackbar(err.response.data.message);
+      openNotification(err.response.data.message, "error");
     });
 };
