@@ -1,41 +1,29 @@
 import Cookie from "js-cookie";
 import axios from "axios";
-import {
-  handleFieldsType,
-  handleLoginType,
-  handleRegisterType,
-} from "../types/loginAndRegister";
+import { handleLoginType, handleRegisterType } from "../types/loginAndRegister";
 
-export const handleFields: handleFieldsType = (event, cb) => {
-  const element = event.target as HTMLInputElement;
-  cb((prev) => ({
-    ...prev,
-    [element.name]: element.value,
-  }));
-};
-
-export const handleLogin: handleLoginType = (data, openSnackbar) => {
+export const handleLogin: handleLoginType = (data, openNotification) => {
   axios
     .post("/auth/login", data)
     .then((res) => {
       Cookie.set("token", res.data.access_token, { secure: true });
-      openSnackbar("welcome to panel");
+      openNotification("welcome to panel", "success");
       setTimeout(() => window.location.replace("/dashboard"), 3000);
     })
     .catch((err) => {
-      openSnackbar(err.response.data.message);
+      openNotification(err.response.data.message, "error");
     });
 };
 
-export const handleRegister: handleRegisterType = (data, openSnackbar) => {
+export const handleRegister: handleRegisterType = (data, openNotification) => {
   axios
     .post("/auth/register", data)
     .then((res) => {
       localStorage.setItem("profile", JSON.stringify(res.data));
-      openSnackbar(`Your Code: ${res.data.verify_code}`);
+      openNotification(`Your Code: ${res.data.verify_code}`, "info");
       setTimeout(() => window.location.replace("/verify"), 4000);
     })
     .catch((err) => {
-      openSnackbar(err.response.data.message);
+      openNotification(err.response.data.message, "error");
     });
 };

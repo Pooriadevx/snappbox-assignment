@@ -1,52 +1,59 @@
-import React, { useState } from "react";
-import { Button, Grid, TextField, Typography } from "@mui/material";
-import { LoginInputsType } from "../../types/loginAndRegister";
-import { handleFields, handleLogin } from "../../utils/loginAndRegister";
-import { useCustomSnackbar } from "../../hooks/useCustomSnackbar";
+import React from "react";
+import { Button, Flex, Form, Input } from "antd";
+import Title from "antd/es/typography/Title";
+import { handleLogin } from "../../utils/loginAndRegister";
+import { useNotification } from "../../hooks/useNotification";
+import { dataOfFields } from "../../constants/common";
 
 const Login: React.FC = () => {
-  const [data, setData] = useState<LoginInputsType>({
-    email: "",
-    password: "",
-  });
-  const { CustomSnackbar, openSnackbar } = useCustomSnackbar();
+  const { contextHolder, openNotification } = useNotification();
 
   return (
     <>
-      <Grid
-        container
-        justifyContent={"center"}
-        alignItems={"center"}
-        direction={"column"}
-        xs={3}
-        gap={1}
-        paddingY={10}
-        onChange={(e) => handleFields(e, setData)}
-      >
-        <Typography variant="h4" gutterBottom>
-          Login
-        </Typography>
-        {Object.keys(data).map((item) => (
-          <TextField
-            key={item}
-            name={item}
-            fullWidth
-            label={item}
-            value={data[item as keyof LoginInputsType]}
-          />
-        ))}
-        <Button
-          onClick={() => handleLogin(data, openSnackbar)}
-          variant="contained"
-          fullWidth
+      <Flex justify="center" align="center" vertical>
+        <Title level={4}>Login</Title>
+        <Form
+          name="Form"
+          labelCol={{ span: 8 }}
+          wrapperCol={{ span: 16 }}
+          style={{ width: 600 }}
+          onFinish={(values) => handleLogin(values, openNotification)}
+          autoComplete="off"
         >
-          Submit
-        </Button>
-        <Button href="/register" variant="text">
-          Register
-        </Button>
-      </Grid>
-      {CustomSnackbar}
+          {dataOfFields.map((name) => {
+            return (
+              <Form.Item
+                label={name}
+                key={name}
+                name={name}
+                rules={[
+                  {
+                    required: true,
+                    message: `Please input your ${name}!`,
+                  },
+                ]}
+              >
+                {name === "password" ? (
+                  <Input.Password size="large" />
+                ) : (
+                  <Input size="large" />
+                )}
+              </Form.Item>
+            );
+          })}
+          <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+            <Flex align="center" gap={"large"}>
+              <Button type="primary" htmlType="submit" size="large">
+                Submit
+              </Button>
+              <Button type="link" href="/register" size="large">
+                Register
+              </Button>
+            </Flex>
+          </Form.Item>
+        </Form>
+      </Flex>
+      {contextHolder}
     </>
   );
 };

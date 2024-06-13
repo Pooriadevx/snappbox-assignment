@@ -1,18 +1,17 @@
-import { KeyboardEvent, MutableRefObject } from "react";
-import { openSnackbarType } from "./common";
+import { KeyboardEvent } from "react";
+import { openNotificationType } from "./common";
 
 export type handleVerifyCodeType = (
   verifyCode: string,
-  openSnackbar: openSnackbarType
+  openNotification: openNotificationType
 ) => void;
 
-export type handleResendCodeType = (
-  openSnackbar: openSnackbarType
-) => void;
+export type handleResendCodeType = (openNotification: openNotificationType) => void;
 
-export type useCodeInputType = (openSnackbar: openSnackbarType) => {
-  otp: string[];
-  otpBoxRef: MutableRefObject<HTMLInputElement[]>;
+export type useCodeInputType = () => {
+  otpBoxRef: HTMLInputElement[];
   handleChange: (target: EventTarget) => void;
-  handleBackspaceEnter: (e: KeyboardEvent<HTMLDivElement>) => void;
+  handleBackspaceEnter: (e: KeyboardEvent<HTMLElement>) => void;
 };
+
+export type formValuesType = { key: string; number: string };

@@ -1,13 +1,9 @@
-import { AlertProps, SnackbarProps } from "@mui/material";
+import { IconType } from "antd/es/notification/interface";
+import { ReactElement } from "react";
 
-export type openSnackbarType = (message: string) => void;
+export type openNotificationType = (message: string, type: IconType) => void;
 
-export type useCustomSnackbarType = (
-  data?: Partial<{
-    alert: AlertProps;
-    snackbar: SnackbarProps;
-  }>
-) => {
-  CustomSnackbar: JSX.Element;
-  openSnackbar: (message: string) => void;
+export type useNotificationType = () => {
+  contextHolder: ReactElement;
+  openNotification: openNotificationType;
 };

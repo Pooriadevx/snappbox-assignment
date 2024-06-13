@@ -1,17 +1,26 @@
-import { Dispatch, FormEvent, SetStateAction } from "react";
-import { openSnackbarType } from "./common";
+import { openNotificationType } from "./common";
 
-export type LoginInputsType = {
+type LoginInputsType = {
   email: string;
   password: string;
 };
 
+export type DataOfLoginFieldsType = ["email", "password"];
+
 export type handleLoginType = (
   data: LoginInputsType,
-  openSnackbar: openSnackbarType
+  openNotification: openNotificationType
 ) => void;
 
-export type RegisterInputsType = {
+export type DataOfRegisterFieldsType = [
+  "firstName",
+  "lastName",
+  "email",
+  "password",
+  "phone"
+];
+
+type RegisterInputsType = {
   firstName: string;
   lastName: string;
   email: string;
@@ -21,10 +30,5 @@ export type RegisterInputsType = {
 
 export type handleRegisterType = (
   data: RegisterInputsType,
-  openSnackbar: openSnackbarType
-) => void;
-
-export type handleFieldsType = <T>(
-  event: FormEvent<HTMLDivElement>,
-  cb: Dispatch<SetStateAction<T>>
+  openNotification: openNotificationType
 ) => void;
