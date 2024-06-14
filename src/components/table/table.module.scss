@@ -1,0 +1,12 @@
+.root {
+  padding: 20px;
+  direction: rtl;
+  width: 100%;
+  height: 100%;
+}
+
+.rootPagination {
+  padding-block: 20px;
+  display: flex;
+  flex-direction: row-reverse;
+}
