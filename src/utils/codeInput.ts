@@ -1,13 +1,12 @@
+import { notification } from "antd";
+import axios from "axios";
 import {
   handleResendCodeType,
   handleVerifyCodeType,
 } from "./../types/codeInput";
-import axios from "axios";
+import { handleError } from "./errorHandler";
 
-export const handleVerifyCode: handleVerifyCodeType = (
-  verifyCode,
-  openNotification
-) => {
+export const handleVerifyCode: handleVerifyCodeType = (verifyCode) => {
   const profile = localStorage.getItem("profile");
   if (profile) {
     const data = {
@@ -18,30 +17,34 @@ export const handleVerifyCode: handleVerifyCodeType = (
       .post("/auth/verify", data)
       .then((res) => {
         if (res.data) {
-          openNotification("Register Completed. Please Login", "success");
+          notification.success({ message: "Register Completed. Please Login" });
           setTimeout(() => window.location.replace("/"), 4000);
         } else {
-          openNotification("Wrong code", "warning");
+          notification.warning({ message: "Wrong code" });
         }
       })
-      .catch((err) => openNotification(err.response.data.message, "warning"));
+      .catch((err) => handleError(err));
   } else {
-    openNotification("Profile doesn't exist!", "error");
+    notification.error({ message: "Profile doesn't exist!" });
+    setTimeout(() => window.location.replace("/register"), 2000);
   }
 };
 
-export const handleResendCode: handleResendCodeType = (openNotification) => {
+export const handleResendCode: handleResendCodeType = () => {
   const profile = localStorage.getItem("profile");
   if (profile) {
     axios
       .post("/auth/resend-code", { email: JSON.parse(profile).email })
       .then((res) => {
-        openNotification(`Code: ${res.data}`, "info");
+        notification.info({ message: `Code: ${res.data}` });
       })
       .catch((err) => {
-        openNotification(err.response.data.message, "warning");
+        handleError(err);
       });
   } else {
-    openNotification("Profile doesn't exist!", "error");
+    notification.error({
+      message: "Profile doesn't exist!",
+    });
+    setTimeout(() => window.location.replace("/register"), 2000);
   }
 };

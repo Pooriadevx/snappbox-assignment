@@ -7,10 +7,8 @@ import { useCodeInput } from "../../utils/useCodeInput";
 import { formValuesType } from "../../types/codeInput";
 import { CODE_INPUT_DIGITS } from "../../constants/common";
 import classes from "./codeInput.module.scss";
-import { useNotification } from "../../hooks/useNotification";
 
 export const CodeInput: React.FC = () => {
-  const { contextHolder, openNotification } = useNotification();
   const { handleBackspaceEnter, otpBoxRef, handleChange } = useCodeInput();
 
   const [form] = Form.useForm<formValuesType>();
@@ -18,57 +16,51 @@ export const CodeInput: React.FC = () => {
 
   const onFinish = (values: formValuesType) => {
     const otpCode = Object.values(values).join("");
-    handleVerifyCode(otpCode, openNotification);
+    handleVerifyCode(otpCode);
   };
 
   return (
-    <>
-      <Flex align={"center"} justify={"center"} gap={14} vertical>
-        <Title level={5}>Type Verify Code:</Title>
-        <Form
-          id="Form"
-          form={form}
-          onFinish={onFinish}
-          style={{ width: "100%" }}
-          onChange={(e) => handleChange(e.target)}
-          onKeyUp={(e) => handleBackspaceEnter(e)}
+    <Flex align={"center"} justify={"center"} gap={14} vertical>
+      <Title level={5}>Type Verify Code:</Title>
+      <Form
+        id="Form"
+        form={form}
+        onFinish={onFinish}
+        style={{ width: "100%" }}
+        onChange={(e) => handleChange(e.target)}
+        onKeyUp={(e) => handleBackspaceEnter(e)}
+      >
+        <Flex gap={"middle"} justify="center" align="center">
+          {Array.from({ length: CODE_INPUT_DIGITS }, (_, index) => {
+            return (
+              <Form.Item key={index} name={index}>
+                <InputNumber
+                  controls={false}
+                  variant="outlined"
+                  className={classes.input}
+                  maxLength={1}
+                  data-index={index}
+                  ref={(ref) => (otpBoxRef[index] = ref as HTMLInputElement)}
+                />
+              </Form.Item>
+            );
+          })}
+        </Flex>
+      </Form>
+      <ButtonGroup>
+        <Button
+          type="primary"
+          disabled={values.join("").length !== CODE_INPUT_DIGITS}
+          htmlType="submit"
+          form="Form"
         >
-          <Flex gap={"middle"} justify="center" align="center">
-            {Array.from({ length: CODE_INPUT_DIGITS }, (_, index) => {
-              return (
-                <Form.Item key={index} name={index}>
-                  <InputNumber
-                    controls={false}
-                    variant="outlined"
-                    className={classes.input}
-                    maxLength={1}
-                    data-index={index}
-                    ref={(ref) => (otpBoxRef[index] = ref as HTMLInputElement)}
-                  />
-                </Form.Item>
-              );
-            })}
-          </Flex>
-        </Form>
-        <ButtonGroup>
-          <Button
-            type="primary"
-            disabled={values.join("").length !== CODE_INPUT_DIGITS}
-            htmlType="submit"
-            form="Form"
-          >
-            verify
-          </Button>
-          <Button
-            onClick={() => handleResendCode(openNotification)}
-            color="warning"
-          >
-            Resend Code
-          </Button>
-        </ButtonGroup>
-      </Flex>
-      {contextHolder}
-    </>
+          verify
+        </Button>
+        <Button onClick={handleResendCode} color="warning">
+          Resend Code
+        </Button>
+      </ButtonGroup>
+    </Flex>
   );
 };
 

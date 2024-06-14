@@ -1,5 +1,3 @@
-import { openNotificationType } from "./common";
-
 type LoginInputsType = {
   email: string;
   password: string;
@@ -7,10 +5,7 @@ type LoginInputsType = {
 
 export type DataOfLoginFieldsType = ["email", "password"];
 
-export type handleLoginType = (
-  data: LoginInputsType,
-  openNotification: openNotificationType
-) => void;
+export type handleLoginType = (data: LoginInputsType) => void;
 
 export type DataOfRegisterFieldsType = [
   "firstName",
@@ -28,7 +23,4 @@ type RegisterInputsType = {
   password: string;
 };
 
-export type handleRegisterType = (
-  data: RegisterInputsType,
-  openNotification: openNotificationType
-) => void;
+export type handleRegisterType = (data: RegisterInputsType) => void;
