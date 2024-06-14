@@ -10,6 +10,9 @@ export const handleError = (error: any) => {
         message: err.data.message,
       });
     }
+    if (err?.data.statusCode) {
+      setTimeout(() => window.location.replace("/"), 2000);
+    }
   } else {
     const textError: ValidateStatus = error.errorFields
       .map((item: any) => item.errors[0])
