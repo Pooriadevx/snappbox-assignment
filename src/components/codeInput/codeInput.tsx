@@ -3,7 +3,7 @@ import { Button, Flex, Form, InputNumber } from "antd";
 import ButtonGroup from "antd/es/button/button-group";
 import Title from "antd/es/typography/Title";
 import { handleResendCode, handleVerifyCode } from "../../utils/codeInput";
-import { useCodeInput } from "../../utils/useCodeInput";
+import { useCodeInput } from "../../hooks/useCodeInput";
 import { formValuesType } from "../../types/codeInput";
 import { CODE_INPUT_DIGITS } from "../../constants/common";
 import classes from "./codeInput.module.scss";

@@ -1,5 +1,5 @@
 import React, { KeyboardEvent } from "react";
-import { CODE_INPUT_DIGITS } from "./../constants/common";
+import { CODE_INPUT_DIGITS } from "../constants/common";
 import { useCodeInputType } from "../types/codeInput";
 
 export const useCodeInput: useCodeInputType = () => {
