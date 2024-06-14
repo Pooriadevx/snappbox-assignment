@@ -7,3 +7,5 @@ export type useNotificationType = () => {
   contextHolder: ReactElement;
   openNotification: openNotificationType;
 };
+
+export type WebWorkerType = (workerCode: () => void) => Worker

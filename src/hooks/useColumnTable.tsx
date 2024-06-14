@@ -1,15 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Flex, Form, InputNumber, Popconfirm } from "antd";
 import { CheckOutlined, EditTwoTone } from "@ant-design/icons";
 import { useNotification } from "./useNotification";
 import { axiosInstance } from "../interceptors/axiosInstance";
 import { ColoumnsType, TableItemType } from "../types/table";
+import worker from "../workers/app.worker.ts";
+import { webWorker } from "../workers/WebWorker.ts";
 
 export const useColumnTable = () => {
   const [editingKey, setEditingKey] = useState<number | null>(null);
   const [data, setData] = useState<TableItemType[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [form] = Form.useForm();
+
+  const workerRef = useRef<Worker>();
+  const memoizedWebWorker = useCallback(() => webWorker(worker), []);
 
   const { contextHolder, openNotification } = useNotification();
 
@@ -149,41 +154,31 @@ export const useColumnTable = () => {
     setLoading(true);
     axiosInstance
       .get("/commissions")
-      .then((res) => {
-        const result: TableItemType[] = [];
-        const tempObj: Record<string, TableItemType> = {};
-
-        res.data.forEach((item: TableItemType) => {
-          if (item.id === item.parent_id) {
-            if (tempObj[item.parent_id]?.children) {
-              tempObj[item.parent_id] = {
-                ...item,
-                children: tempObj[item.parent_id].children,
-              };
-            } else {
-              tempObj[item.parent_id] = { ...item, children: [] };
-            }
-            result.push(tempObj[item.parent_id]);
-          } else {
-            if (!tempObj[item.parent_id]) {
-              tempObj[item.parent_id] = {
-                ...tempObj[item.parent_id],
-                children: [item],
-              };
-            } else {
-              tempObj[item.parent_id].children.push(item);
-            }
-          }
-        });
-
-        setData(result);
+      .then((response) => {
+        if (workerRef.current) {
+          workerRef.current.postMessage(response.data);
+        }
       })
-      .catch((err) => openNotification(err.response.data.message, "error"))
-      .finally(() => setLoading(false));
+      .catch((error) => {
+        setLoading(false);
+        openNotification(error.response.data.message, "error");
+      });
   };
 
   useEffect(() => {
     getData();
+    workerRef.current = memoizedWebWorker();
+    workerRef.current.addEventListener("message", (event) => {
+      setData(event.data);
+      setLoading(false);
+    });
+
+    return () => {
+      if (workerRef.current) {
+        workerRef.current.removeEventListener("message", () => setData([]));
+        workerRef.current.terminate();
+      }
+    };
   }, []);
 
   return {
