@@ -23,7 +23,7 @@ export const EditableCell: React.FC<
             maxLength={3}
             max={100}
             addonBefore="%"
-            style={{ width: 80 }}
+            style={{ width: 70 }}
           />
         </Form.Item>
       ) : (
