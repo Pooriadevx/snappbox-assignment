@@ -1,4 +1,4 @@
-import { WebWorkerType } from "../types/common";
+import { WebWorkerType } from "../types/webWorker";
 
 export const webWorker: WebWorkerType = (workerCode) => {
   let code = workerCode.toString();

@@ -5,38 +5,34 @@ import { EditableCell } from "../../constants/common.tsx";
 import classes from "./table.module.scss";
 
 const TableData: React.FC = () => {
-  const { cancel, contextHolder, data, form, loading, mergedColumns } =
-    useColumnTable();
+  const { cancel, data, form, loading, mergedColumns } = useColumnTable();
 
   return (
-    <>
-      <Form
-        form={form}
-        component={false}
-        style={{
-          width: "100%",
+    <Form
+      form={form}
+      component={false}
+      style={{
+        width: "100%",
+      }}
+    >
+      <Table
+        components={{
+          body: {
+            cell: EditableCell,
+          },
         }}
-      >
-        <Table
-          components={{
-            body: {
-              cell: EditableCell,
-            },
-          }}
-          rowKey={(record) => record.id}
-          dataSource={data}
-          columns={mergedColumns}
-          rowClassName={classes.row}
-          rootClassName={classes.root}
-          loading={loading}
-          pagination={{
-            onChange: cancel,
-            rootClassName: classes.rootPagination,
-          }}
-        />
-      </Form>
-      {contextHolder}
-    </>
+        rowKey={(record) => record.id}
+        dataSource={data}
+        columns={mergedColumns}
+        rowClassName={classes.row}
+        rootClassName={classes.root}
+        loading={loading}
+        pagination={{
+          onChange: cancel,
+          rootClassName: classes.rootPagination,
+        }}
+      />
+    </Form>
   );
 };
 

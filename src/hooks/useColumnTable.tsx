@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { Flex, Form, InputNumber, Popconfirm } from "antd";
+import { Flex, Form, InputNumber, notification, Popconfirm } from "antd";
 import { CheckOutlined, EditTwoTone } from "@ant-design/icons";
-import { useNotification } from "./useNotification";
 import { axiosInstance } from "../interceptors/axiosInstance";
 import { ColoumnsType, TableItemType } from "../types/table";
 import worker from "../workers/app.worker.ts";
 import { webWorker } from "../workers/WebWorker.ts";
+import { handleError } from "../utils/errorHandler.ts";
 
 export const useColumnTable = () => {
   const [editingKey, setEditingKey] = useState<number | null>(null);
@@ -15,8 +15,6 @@ export const useColumnTable = () => {
 
   const workerRef = useRef<Worker>();
   const memoizedWebWorker = useCallback(() => webWorker(worker), []);
-
-  const { contextHolder, openNotification } = useNotification();
 
   const isEditing = (record: TableItemType) => record.id === editingKey;
 
@@ -38,7 +36,9 @@ export const useColumnTable = () => {
       });
 
       if (response.data.done) {
-        openNotification("Update Successful", "success");
+        notification.success({
+          message: "Update Successful",
+        });
         const newData = [...data];
         const index = newData.findIndex((item) => record.id === item.id);
         if (index > -1) {
@@ -55,14 +55,12 @@ export const useColumnTable = () => {
           setEditingKey(null);
         }
       } else {
-        openNotification("Update Failed", "warning");
+        notification.warning({
+          message: "Update Failed",
+        });
       }
-    } catch (errInfo: any) {
-      const textError = errInfo.errorFields
-        .map((item: any) => item.errors[0])
-        .join(",");
-
-      openNotification(textError, "error");
+    } catch (errInfo) {
+      handleError(errInfo);
     }
   };
 
@@ -161,7 +159,7 @@ export const useColumnTable = () => {
       })
       .catch((error) => {
         setLoading(false);
-        openNotification(error.response.data.message, "error");
+        handleError(error);
       });
   };
 
@@ -187,6 +185,5 @@ export const useColumnTable = () => {
     form,
     data,
     cancel,
-    contextHolder,
   };
 };

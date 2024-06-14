@@ -21,6 +21,7 @@ export const EditableCell: React.FC<
           <InputNumber
             controls={false}
             maxLength={3}
+            max={100}
             addonBefore="%"
             style={{ width: 80 }}
           />

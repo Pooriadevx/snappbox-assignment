@@ -1,12 +1,8 @@
 import { KeyboardEvent } from "react";
-import { openNotificationType } from "./common";
 
-export type handleVerifyCodeType = (
-  verifyCode: string,
-  openNotification: openNotificationType
-) => void;
+export type handleVerifyCodeType = (verifyCode: string) => void;
 
-export type handleResendCodeType = (openNotification: openNotificationType) => void;
+export type handleResendCodeType = () => void;
 
 export type useCodeInputType = () => {
   otpBoxRef: HTMLInputElement[];
