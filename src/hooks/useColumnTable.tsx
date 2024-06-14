@@ -40,17 +40,28 @@ export const useColumnTable = () => {
           message: "Update Successful",
         });
         const newData = [...data];
-        const index = newData.findIndex((item) => record.id === item.id);
+
+        const index = newData.findIndex(
+          (item) => record.parent_id === item.parent_id
+        );
         if (index > -1) {
-          const item = newData[index];
-          newData[index] = {
-            ...item,
-            ...row,
-          };
-          setData(newData);
-          setEditingKey(null);
-        } else {
-          newData.push(row);
+          if (record.parent_id === record.id) {
+            const item = newData[index];
+            newData[index] = {
+              ...item,
+              ...row,
+            };
+          } else {
+            const childrendData = newData[index].children;
+            const childIndex = childrendData.findIndex(
+              (item) => item.id === record.id
+            );
+
+            childrendData[childIndex] = {
+              ...childrendData[childIndex],
+              ...row,
+            };
+          }
           setData(newData);
           setEditingKey(null);
         }
@@ -83,7 +94,7 @@ export const useColumnTable = () => {
           addonBefore="%"
           controls={false}
           readOnly
-          style={{ width: 80 }}
+          style={{ width: 70 }}
         />
       ),
     },
@@ -99,7 +110,7 @@ export const useColumnTable = () => {
           defaultValue={record.commission_promotion}
           addonBefore="%"
           readOnly
-          style={{ width: 80 }}
+          style={{ width: 70 }}
         />
       ),
     },
